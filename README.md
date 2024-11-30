@@ -1,5 +1,4 @@
-# dictionary
-Project Title: Dictionary Web Application
+# Project Title: Dictionary Web Application
 Objective: Designed and developed a comprehensive language tool to enhance vocabulary learning and exploration for students, professionals, and language enthusiasts.
 
 Key Contributions:
