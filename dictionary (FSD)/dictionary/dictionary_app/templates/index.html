@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Dictionary App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Dictionary App</h1>
+        <form method="GET" action="{% url 'index' %}">
+            <input type="text" name="word" placeholder="Search for a word" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Display results or random word -->
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <h2>
+                {% if is_searched %}
+                    Results for "{{ word }}"
+                {% else %}
+                    Learn new word: "{{ word }}"
+                {% endif %}
+            </h2>
+            <h3>Definitions:</h3>
+            <ul>
+                {% for definition in definitions %}
+                    <li>{{ definition.definition }}</li>
+                {% endfor %}
+            </ul>
+            {% if synonyms %}
+                <h3>Synonyms:</h3>
+                <ul>
+                    {% for synonym in synonyms %}
+                        <li>{{ synonym }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if antonyms %}
+                <h3>Antonyms:</h3>
+                <ul>
+                    {% for antonym in antonyms %}
+                        <li>{{ antonym }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if examples %}
+                <h3>Examples:</h3>
+                <ul>
+                    {% for example in examples %}
+                        <li>{{ example }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+
+        <!-- Sidebar for search history -->
+        <div style="float: right; width: 30%;">
+            <h3>Search History</h3>
+            <ul>
+                {% for history in search_history %}
+                    <li><a href="{% url 'search_word' %}?search_term={{ history.word }}">{{ history.word }}</a></li>
+                {% empty %}
+                    <li>No search history.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Dictionary App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Dictionary App</h1>
+        <form method="POST" action="{% url 'search_word' %}">
+            {% csrf_token %}
+            <input type="text" name="search_term" placeholder="Enter a word" value="{{ search_term }}" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if word_data.error %}
+            <p>{{ word_data.error }}</p>
+        {% else %}
+            <h2>Results for "{{ search_term }}"</h2>
+            <h3>Definitions:</h3>
+            <ul>
+                {% for definition in word_data.definitions %}
+                    <li>{{ definition.definition }}</li>
+                {% endfor %}
+            </ul>
+            {% if word_data.synonyms %}
+                <h3>Synonyms:</h3>
+                <ul>
+                    {% for synonym in word_data.synonyms %}
+                        <li>{{ synonym }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if word_data.antonyms %}
+                <h3>Antonyms:</h3>
+                <ul>
+                    {% for antonym in word_data.antonyms %}
+                        <li>{{ antonym }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if word_data.examples %}
+                <h3>Usage Examples:</h3>
+                <ul>
+                    {% for example in word_data.examples %}
+                        <li>{{ example }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+        
+        <!-- Sidebar for search history -->
+        <div style="float: right; width: 30%;">
+            <h3>Search History</h3>
+            <ul>
+                {% for history in search_history %}
+                    <li><a href="{% url 'search_word' %}?search_term={{ history.word }}">{{ history.word }}</a></li>
+                {% empty %}
+                    <li>No search history.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

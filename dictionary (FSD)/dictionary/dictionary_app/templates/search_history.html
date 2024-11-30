@@ -1,0 +1,17 @@
+<!-- Display search history -->
+<div>
+    <h1>Search History</h1>
+    <ul>
+        {% for history in search_history %}
+            <li>{{ history.word }} ({{ history.timestamp }}) 
+                <form method="post" action="{% url 'search_history' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="search_id" value="{{ history.id }}">
+                    <button type="submit">Search Again</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>No search history.</li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Dictionary App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Dictionary App</h1>
+        <form method="POST" action="{% url 'search_word' %}">
+            {% csrf_token %}
+            <input type="text" name="search_term" placeholder="Enter a word" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Sidebar for search history -->
+        <div style="float: right; width: 30%;">
+            <h3>Search History</h3>
+            <ul>
+                {% for history in search_history %}
+                    <li><a href="{% url 'search_word' %}?search_term={{ history.word }}">{{ history.word }}</a></li>
+                {% empty %}
+                    <li>No search history.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
